@@ -28,6 +28,8 @@ class DataBean implements Serializable {
     }
 
     public DataBean(long id, String name) {
+        changes =new PropertyChangeSupport(this);
+        vetos =new VetoableChangeSupport(this);
         this.id=id;
         this.name=name;
     }
