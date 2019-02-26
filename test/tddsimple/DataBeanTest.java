@@ -5,6 +5,10 @@
  */
 package tddsimple;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.io.Serializable;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -13,8 +17,10 @@ import static org.junit.Assert.*;
  * Test class for a simple bean TDD example.
  * @author jmarturi
  */
-public class DataBeanTest {
+public class DataBeanTest{
 
+    static Boolean EVENT_FIRED=false;
+    
     @Test
     public void testBeanConstruction() throws Exception {
         DataBean bean=DataBean.class.getConstructor().newInstance();
@@ -92,4 +98,32 @@ public class DataBeanTest {
                      id.hashCode(),bean.hashCode());
         
     }
+    //Test events
+    @Test
+    public void testPropertyChange(){
+        EVENT_FIRED=false;
+        DataBean bean=new DataBean();
+        bean.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            EVENT_FIRED=true;
+        });
+        bean.setId(Long.MAX_VALUE);
+        assertTrue("Event not fired for id property!!!",EVENT_FIRED);
+        EVENT_FIRED=false;
+        bean.setName("newName");
+        assertTrue("Event not fired for name property!!!",EVENT_FIRED);
+    }
+    @Test
+    public void testVetoablePropertyChange(){
+        DataBean bean=new DataBean(99l,"anyName");
+        bean.addVetoableChangeListener((PropertyChangeEvent evt) -> {
+            if(evt.getPropertyName().equals("id"))
+                throw new PropertyVetoException("Change not allowed",evt);
+        });
+        bean.setName("newName");
+        assertEquals("Name not changed!!!","newName",bean.getName());
+        bean.setId(Long.MAX_VALUE);
+        assertNotEquals("Id change not vetoed!!!"
+                ,(Long)Long.MAX_VALUE, bean.getId());
+    }
+    
 }
