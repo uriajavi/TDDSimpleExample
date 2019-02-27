@@ -7,6 +7,7 @@ package tddsimple;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
@@ -33,9 +34,9 @@ class DataBean implements Serializable {
         this.id=id;
         this.name=name;
     }
-            
-            
-    void setId(Long id) {
+           
+    void setId(Long id) throws PropertyVetoException {
+        vetos.fireVetoableChange("id", this.id, id);
         changes.firePropertyChange("id", this.id, id);
         this.id=id;
     }
@@ -45,9 +46,8 @@ class DataBean implements Serializable {
     }
 
     void setName(String name) {
-        String oldName=this.name;
+        changes.firePropertyChange("name",this.name,name);
         this.name=name;
-        changes.firePropertyChange("name",oldName,name);
     }
 
     String getName() {

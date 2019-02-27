@@ -36,7 +36,7 @@ public class DataBeanTest{
     }
     //Test getters/setters
     @Test
-    public void testIdProperty() {
+    public void testIdProperty() throws PropertyVetoException {
         DataBean bean=new DataBean();
         Long id=999999l;
         bean.setId(id);
@@ -54,7 +54,7 @@ public class DataBeanTest{
     }
     //Test public methods
     @Test
-    public void testBeanToString(){
+    public void testBeanToString() throws PropertyVetoException{
         DataBean bean=new DataBean();
         bean.setId(666l);
         bean.setName("someName");
@@ -63,7 +63,7 @@ public class DataBeanTest{
                       bean.toString());
     }
     @Test
-    public void testBeanEquality(){
+    public void testBeanEquality() throws PropertyVetoException{
         DataBean bean=new DataBean();
         bean.setId(666l);
         bean.setName("someName");
@@ -74,7 +74,7 @@ public class DataBeanTest{
                       bean,other);
     }
     @Test
-    public void testBeanInEquality(){
+    public void testBeanInequality() throws PropertyVetoException{
         DataBean bean=new DataBean();
         bean.setId(666l);
         bean.setName("someName");
@@ -89,7 +89,7 @@ public class DataBeanTest{
                       bean,other);
     }
     @Test
-    public void testBeanHashCode(){
+    public void testBeanHashCode() throws PropertyVetoException{
         DataBean bean=new DataBean();
         assertEquals("hashCode are not as expected!!!",0,bean.hashCode());
         Long id=666l;
@@ -100,7 +100,7 @@ public class DataBeanTest{
     }
     //Test events
     @Test
-    public void testPropertyChange(){
+    public void testPropertyChange() throws PropertyVetoException{
         EVENT_FIRED=false;
         DataBean bean=new DataBean();
         bean.addPropertyChangeListener((PropertyChangeEvent evt) -> {
@@ -112,8 +112,8 @@ public class DataBeanTest{
         bean.setName("newName");
         assertTrue("Event not fired for name property!!!",EVENT_FIRED);
     }
-    @Test
-    public void testVetoablePropertyChange(){
+    @Test(expected=PropertyVetoException.class)
+    public void testVetoablePropertyChange() throws PropertyVetoException{
         DataBean bean=new DataBean(99l,"anyName");
         bean.addVetoableChangeListener((PropertyChangeEvent evt) -> {
             if(evt.getPropertyName().equals("id"))
@@ -122,8 +122,7 @@ public class DataBeanTest{
         bean.setName("newName");
         assertEquals("Name not changed!!!","newName",bean.getName());
         bean.setId(Long.MAX_VALUE);
-        assertNotEquals("Id change not vetoed!!!"
-                ,(Long)Long.MAX_VALUE, bean.getId());
+        fail("Id change not vetoed!!!");
     }
     
 }
