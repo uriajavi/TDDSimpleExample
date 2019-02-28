@@ -16,7 +16,7 @@ import java.io.Serializable;
  *
  * @author jmarturi
  */
-class DataBean implements Serializable {
+public class DataBean implements Serializable {
 
     private Long id;
     private String name;
@@ -35,22 +35,22 @@ class DataBean implements Serializable {
         this.name=name;
     }
            
-    void setId(Long id) throws PropertyVetoException {
+    public void setId(Long id) throws PropertyVetoException {
         vetos.fireVetoableChange("id", this.id, id);
         changes.firePropertyChange("id", this.id, id);
         this.id=id;
     }
 
-    Long getId() {
+    public Long getId() {
         return id;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         changes.firePropertyChange("name",this.name,name);
         this.name=name;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -80,11 +80,11 @@ class DataBean implements Serializable {
         return hash;
     }
 
-    void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+    public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
         changes.addPropertyChangeListener(propertyChangeListener);
     }
 
-    void addVetoableChangeListener(VetoableChangeListener vetoableChangeListener) {
+    public void addVetoableChangeListener(VetoableChangeListener vetoableChangeListener) {
         vetos.addVetoableChangeListener(vetoableChangeListener);
     }
     
