@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
  * @author jmarturi
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({})
+@Suite.SuiteClasses({DataBeanTest.class, DataBeanIntegratedTest.class})
 public class RootSuite {
     
 }
