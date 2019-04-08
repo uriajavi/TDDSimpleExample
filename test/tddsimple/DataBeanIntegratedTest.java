@@ -63,8 +63,6 @@ public class DataBeanIntegratedTest {
                     bo.getAllData().contains(bean));
         assertEquals("Bean with id="+id+" not found!!!",
                     bean,bo.getDataBeanById(id));
-        assertNull("Bean with id=-1 found!!!",
-                    bo.getDataBeanById(-1l));
     }
     @Test
     public void testUpdateDataBean() throws PropertyVetoException{
