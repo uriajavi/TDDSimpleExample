@@ -59,7 +59,7 @@ class DataBean implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 1);
         return hash;
     }
     
